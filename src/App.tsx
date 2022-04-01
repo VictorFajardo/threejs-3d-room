@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { OrbitControls, useTexture } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Suspense, useState } from 'react';
+import { BackSide } from 'three';
+import Scenary1 from './Scenery1.png'
+import Scenary2 from './Scenery2.png'
+
+const Scene = ({...props}) => {
+  const sphereTexture = useTexture(props.room ? Scenary1 : Scenary2)
+  return(
+    <mesh scale={[-1, 1, 1]}>
+      <sphereBufferGeometry attach="geometry" args={[100, 50, 50]} />
+      <meshBasicMaterial attach="material" map={sphereTexture} side={BackSide} />
+    </mesh>
+  )
+}
 
 function App() {
+  const [main, setMain] = useState(true)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <button onClick={() => setMain(!main)} style={{zIndex: 1, position: 'absolute'}}>Change Room</button>
+      <Canvas
+        // legacy
+        flat
+        camera={{ fov: 40, near: 1, far: 1000, aspect: (window.innerHeight / window.innerWidth) }}
+        style={{ width: '100vw', height: '100vh', }}
         >
-          Learn React
-        </a>
-      </header>
+        <OrbitControls />
+        <Suspense fallback={null}>
+          <Scene room={main}/>
+        </Suspense>
+      </Canvas>
     </div>
   );
 }
