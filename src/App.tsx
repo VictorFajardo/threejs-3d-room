@@ -2,8 +2,8 @@ import { OrbitControls, useTexture } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState } from 'react';
 import { BackSide } from 'three';
-import Scenary1 from './Scenery1.png'
-import Scenary2 from './Scenery2.png'
+import Scenary1 from './Scenery1.jpeg'
+import Scenary2 from './Scenery2.jpeg'
 
 const Scene = ({...props}) => {
   const sphereTexture = useTexture(props.room ? Scenary1 : Scenary2)
